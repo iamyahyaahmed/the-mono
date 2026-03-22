@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine       # alpine = smaller image
+    container_name: myapp_postgres
+    restart: unless-stopped         # auto-restart if Docker Desktop restarts
+    environment:
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB:       myapp_dev
+    ports:
+      - '5432:5432'                 # host:container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data   # data survives container restarts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:  
