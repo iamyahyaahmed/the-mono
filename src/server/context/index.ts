@@ -38,6 +38,7 @@ export async function createContext({
             ) as JwtPayload
         } catch {
             // Expired or invalid token — treat as unauthenticated
+            console.error("INVALID OR NULL")
             user = null
         }
     }
