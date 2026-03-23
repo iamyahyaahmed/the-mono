@@ -1,0 +1,64 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  createdAt: String!
+  orders: [Order!]!
+}
+
+type Order {
+  id: ID!
+  status: OrderStatus!
+  total: Float!
+  createdAt: String!
+  user: User!
+}
+
+type UserPage {
+  nodes: [User!]!
+  totalCount: Int!
+  hasNextPage: Boolean!
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+}
+
+input CreateOrderInput {
+  userId: ID!
+  total: Float!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Query {
+  users(page: Int, limit: Int): UserPage!
+  user(id: ID!): User
+  orders(status: OrderStatus): [Order!]!
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthPayload!
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): User!
+  createOrder(input: CreateOrderInput!): Order!
+}
